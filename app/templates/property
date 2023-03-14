@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% block main %}
+
+
+
+
+<div class="grid2">
+    <div class="card">
+        <img class ="property-img" src = "{{ url_for('uploadimg', filename=property.picture) }}" alt ="Picture of the individual property">
+
+        <div id="q">
+            <p>{{property.proptitle}}</p>
+        </div>
+
+        <div id="w">
+            <p class="box2">${{property.propprice}}</p>
+        <div>
+
+        <div id="r">
+            <p class="box3">{{property.proptype}}</p>
+        </div>
+
+        <div class = "d"> 
+            <p>{{property.description}}</p>
+        </div>
+        <div id="option">
+            <img id="bed" src="{{ url_for('static', filename = 'Asset/bed.png' )}}" alt="img" > 
+         
+            <div id="hh">
+                <p>{{property.room}} Bedrooms</p>
+            </div> 
+    
+            <img id="shower" src="{{ url_for('static', filename = 'Asset/shower.png' )}}" alt="img" >  
+            
+            <div id="pp">
+                <p>{{property.bathroom}} Bathrooms</p>
+            </div>
+            
+            <img id="locationpic" src="{{ url_for('static', filename = 'Asset/locationpic.png' )}}" alt="img" > 
+
+           <div id="ll">
+                <p>{{ property.location}}</p>
+           </div>
+         
+            <div id="tt">
+                <button>Email Realtor</button>
+            </div>
+
+        </div>
+    
+      
+    </div>
+
+  
+
+</div>
+
+{% endblock %}

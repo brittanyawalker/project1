@@ -24,6 +24,58 @@ def about():
     """Render the website's about page."""
     return render_template('about.html', name="Mary Jane")
 
+@app.route('/properties/create', methods=['GET', 'POST'])
+def createproperty():
+    # Loads up the form
+    form = PropertyForm()
+
+    # Checks for method type and validatation
+    if request.method == 'POST':
+        if form.validate_on_submit():
+
+            # Collect the data from the form
+            proptitle = request.form['proptitle']
+            description = request.form['description']
+            room = request.form['room']
+            bathroom = request.form['bathroom']
+            propprice = request.form['propprice']
+            proptype = request.form['proptype']
+            location = request.form['location']
+            file = request.files['picup']
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+            myprop = Property(proptitle, description, room, bathroom, propprice, proptype, location, filename)
+            db.session.add(myprop)
+            db.session.commit()
+
+            flash('New property has been successfully created and added!', 'success')
+            return redirect(url_for('properties'))
+        else:
+            flash("Error!")
+            return render_template('property.html', form=form)
+    elif request.method == 'GET':
+        return render_template('property.html', form=form)  
+
+@app.route('/properties')
+def properties():
+
+    properties=Property.query.all()
+    return render_template("properties.html", properties=properties)
+
+@app.route('/property/<propertyid>')
+def propertyindivid(propertyid):
+    propertyid = int(propertyid)
+    myprop = Property.query.filter_by(id=propertyid).first()
+
+    return render_template('individproperty.html', property=myprop)
+
+@app.route('/uploads/<filename>')
+def uploadimg(filename):
+    upimg = send_from_directory(os.path.join(os.getcwd(),
+    app.config['UPLOAD_FOLDER']), filename)
+    return upimg
+
 
 ###
 # The functions below should be applicable to all Flask apps.
@@ -61,3 +113,6 @@ def add_header(response):
 def page_not_found(error):
     """Custom 404 page."""
     return render_template('404.html'), 404
+
+if __name__ == '__main__':
+    app.run(debug=True,host="0.0.0.0",port="8080")

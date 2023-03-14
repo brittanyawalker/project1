@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block main %}
+<h1 class="display-5 fw-bold">Properties</h1>
+<legend class = "border-bottom mb-4"></legend>
+<div class="row justify-content-center">
+    {% for property in properties %}
+        <div class="card col-4 m-1 mb-4 shadow p-0" style="overflow:hidden;">
+            <div class="img-box" style="width:100%; height:277px; overflow: hidden;">
+                <img class="img-fluid" src="{{ url_for('getpic', filename=property.pic) }}" alt ="Picture of {{property.title}}"> <br />
+            </div>
+            <div class="card-body">
+                <p class="fw-bold fs-5 mb-0">{{ property.title }}</p>
+                <p class="text-secondary"><i class="fa-solid fa-location-dot me-2"></i>{{ property.location }}</p>
+                <p class="text-white fw-bolder text-center rounded-pill" style="display:inline-block; background:#14b6a6; width:auto; padding: 0.5rem 1.5rem 0.5rem 1.5rem;">${{ property.price }}</p>
+            </div>
+            <div class="bg-primary text-center p-3">
+                <form  method="POST" action="/properties/<id>">
+                    <a style="text-decoration: none;" class="text-white fw-bolder" href="{{ url_for('viewproperty', propertyid=property.id) }}">View Property</a>
+                </form>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
